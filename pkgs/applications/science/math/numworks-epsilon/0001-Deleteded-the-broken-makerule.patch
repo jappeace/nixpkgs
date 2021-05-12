@@ -1,0 +1,24 @@
+From eed6fa75303e31008f5911695366f74d51cd5aed Mon Sep 17 00:00:00 2001
+From: Jappie Klooster <jappieklooster@hotmail.com>
+Date: Wed, 12 May 2021 13:40:27 -0400
+Subject: [PATCH] Deleteded the broken makerule
+
+---
+ ion/src/simulator/linux/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/ion/src/simulator/linux/Makefile b/ion/src/simulator/linux/Makefile
+index ca7da03fa..b05bba115 100644
+--- a/ion/src/simulator/linux/Makefile
++++ b/ion/src/simulator/linux/Makefile
+@@ -28,7 +28,6 @@ ion_src += $(addprefix ion/src/simulator/shared/, \
+   collect_registers.cpp \
+   haptics.cpp \
+   journal.cpp \
+-  platform_action_modifier_ctrl.cpp \
+   state_file.cpp \
+ )
+ 
+-- 
+2.29.2
+
