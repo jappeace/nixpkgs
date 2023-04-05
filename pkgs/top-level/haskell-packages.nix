@@ -397,6 +397,11 @@ in {
       ghc = bh.compiler.ghc943;
       compilerConfig = callPackage ../development/haskell-modules/configuration-ghc-9.4.x.nix { };
     };
+    ghc945 = callPackage ../development/haskell-modules {
+      buildHaskellPackages = bh.packages.ghc943;
+      ghc = bh.compiler.ghc945;
+      compilerConfig = callPackage ../development/haskell-modules/configuration-ghc-9.4.x.nix { };
+    };
     ghc94 = ghc942;
     ghcHEAD = callPackage ../development/haskell-modules {
       buildHaskellPackages = bh.packages.ghcHEAD;
