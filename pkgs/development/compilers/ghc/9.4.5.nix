@@ -25,7 +25,8 @@
 
 , # If enabled, GHC will be built with the GPL-free but slightly slower native
   # bignum backend instead of the faster but GPLed gmp backend.
-  enableNativeBignum ? !(lib.meta.availableOn stdenv.hostPlatform gmp)
+  enableNativeBignum ? !(lib.meta.availableOn stdenv.hostPlatform gmp
+                         && lib.meta.availableOn stdenv.targetPlatform gmp)
 , gmp
 
 , # If enabled, use -fPIC when compiling static libs.
@@ -181,16 +182,37 @@ stdenv.mkDerivation (rec {
 
   src = fetchurl {
     url = "https://downloads.haskell.org/ghc/${version}/ghc-${version}-src.tar.xz";
-    sha256 = "eaf63949536ede50ee39179f2299d5094eb9152d87cc6fb2175006bc98e8905a";
+    sha256 = "e8cef25a6ded1531cda7a90488d0cfb6d780657d16636daa59430be030cd67e2";
   };
 
   enableParallelBuilding = true;
 
   outputs = [ "out" "doc" ];
 
-
   patches = [
-    ./fix-constraint-solver.patch
+    # Don't generate code that doesn't compile when --enable-relocatable is passed to Setup.hs
+    # Can be removed if the Cabal library included with ghc backports the linked fix
+    (fetchpatch {
+      url = "https://github.com/haskell/cabal/commit/6c796218c92f93c95e94d5ec2d077f6956f68e98.patch";
+      stripLen = 1;
+      extraPrefix = "libraries/Cabal/";
+      sha256 = "sha256-yRQ6YmMiwBwiYseC5BsrEtDgFbWvst+maGgDtdD0vAY=";
+    })
+
+    # Fix docs build with sphinx >= 6.0
+    # https://gitlab.haskell.org/ghc/ghc/-/issues/22766
+    (fetchpatch {
+      name = "ghc-docs-sphinx-6.0.patch";
+      url = "https://gitlab.haskell.org/ghc/ghc/-/commit/10e94a556b4f90769b7fd718b9790d58ae566600.patch";
+      sha256 = "0kmhfamr16w8gch0lgln2912r8aryjky1hfcda3jkcwa5cdzgjdv";
+    })
+
+    (fetchpatch {
+      name = "fix-constraint-solver.patch";
+      url = "https://gitlab.haskell.org/ghc/ghc/-/commit/a3a8e9e968ff9b10c6785d53a5f1c8fcef6db72b.patch";
+      sha256 = "00mhfamr16w8gch0lgln2912r8aryjky1hfcda3jkcwa5cdzgjdv";
+    })
+
   ];
 
   postPatch = "patchShebangs .";
