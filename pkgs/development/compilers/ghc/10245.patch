@@ -374,15 +374,5 @@ index 00000000000..6bc481d3ee3
 +
 +-}
 \ No newline at end of file
-diff --git a/testsuite/tests/typecheck/should_compile/all.T b/testsuite/tests/typecheck/should_compile/all.T
-index 8ba46671e3e..def6cdb2e04 100644
---- a/testsuite/tests/typecheck/should_compile/all.T
-+++ b/testsuite/tests/typecheck/should_compile/all.T
-@@ -839,3 +839,4 @@ test('DeepSubsumption04', normal, compile, [''])
- test('DeepSubsumption05', normal, compile, [''])
- test('DeepSubsumption06', normal, compile, ['-XHaskell98'])
- test('DeepSubsumption07', normal, compile, ['-XHaskell2010'])
-+test('T22516', normal, compile, [''])
--- 
 GitLab
 
