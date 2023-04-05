@@ -177,11 +177,11 @@ assert buildTargetLlvmPackages.llvm == llvmPackages.llvm;
 assert stdenv.targetPlatform.isDarwin -> buildTargetLlvmPackages.clang == llvmPackages.clang;
 
 stdenv.mkDerivation (rec {
-  version = "9.4.4";
+  version = "9.4.5";
   pname = "${targetPrefix}ghc${variantSuffix}";
 
   src = fetchurl {
-    url = "https://downloads.haskell.org/ghc/${version}/ghc-${version}-src.tar.xz";
+    url = "https://downloads.haskell.org/ghc/9.4.4/ghc-9.4.4-src.tar.xz";
     sha256 = "e8cef25a6ded1531cda7a90488d0cfb6d780657d16636daa59430be030cd67e2";
   };
 
