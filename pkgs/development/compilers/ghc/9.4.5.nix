@@ -207,11 +207,7 @@ stdenv.mkDerivation (rec {
       sha256 = "0kmhfamr16w8gch0lgln2912r8aryjky1hfcda3jkcwa5cdzgjdv";
     })
 
-    (fetchpatch {
-      name = "fix-constraint-solver.patch";
-      url = "https://gitlab.haskell.org/ghc/ghc/-/commit/a3a8e9e968ff9b10c6785d53a5f1c8fcef6db72b.patch";
-      sha256 = "sha256-YCGSjzqG6wbcZHzhCeN8hwmGsDd8KptrPogUIp9eBWc=";
-    })
+    (./fix-constraint-solver.patch)
 
   ];
 

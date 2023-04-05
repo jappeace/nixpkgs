@@ -10,30 +10,12 @@ forever.
 
 Fixes #22516.
 ---
- compiler/GHC/Tc/Solver/Canonical.hs           |  4 +-
  compiler/GHC/Tc/Solver/Interact.hs            | 89 +++++++++---------
  compiler/GHC/Tc/Solver/Monad.hs               |  4 +-
  compiler/GHC/Tc/Types/Constraint.hs           | 29 +++---
- .../tests/typecheck/should_compile/T22516.hs  | 91 +++++++++++++++++++
- .../tests/typecheck/should_compile/all.T      |  1 +
  6 files changed, 162 insertions(+), 56 deletions(-)
  create mode 100644 testsuite/tests/typecheck/should_compile/T22516.hs
 
-diff --git a/compiler/GHC/Tc/Solver/Canonical.hs b/compiler/GHC/Tc/Solver/Canonical.hs
-index 41ae8fab36e..33ee8e854c8 100644
---- a/compiler/GHC/Tc/Solver/Canonical.hs
-+++ b/compiler/GHC/Tc/Solver/Canonical.hs
-@@ -1815,8 +1815,8 @@ only about /completeness/.
- 
- Note [Decomposing newtypes a bit more aggressively]
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
--c.f. https://github.com/ghc-proposals/ghc-proposals/pull/549
--and discussion on !9282.
-+c.f. https://github.com/ghc-proposals/ghc-proposals/pull/549,
-+issue #22441, and discussion on !9282.
- 
- Consider [G] c, [W] (IO Int) ~R (IO Age)
- where IO is abstract, and
 diff --git a/compiler/GHC/Tc/Solver/Interact.hs b/compiler/GHC/Tc/Solver/Interact.hs
 index 37c8dd6d010..c3aa2d2695c 100644
 --- a/compiler/GHC/Tc/Solver/Interact.hs
@@ -395,15 +377,4 @@ index 00000000000..6bc481d3ee3
 +
 +-}
 \ No newline at end of file
-diff --git a/testsuite/tests/typecheck/should_compile/all.T b/testsuite/tests/typecheck/should_compile/all.T
-index 6413034c05e..1f1e7d8d1f2 100644
---- a/testsuite/tests/typecheck/should_compile/all.T
-+++ b/testsuite/tests/typecheck/should_compile/all.T
-@@ -852,3 +852,4 @@ test('T21951b', normal, compile, ['-Wredundant-strictness-flags'])
- test('T21550', normal, compile, [''])
- test('T22310', normal, compile, [''])
- test('T22331', normal, compile, [''])
-+test('T22516', normal, compile, [''])
--- 
-GitLab
 
