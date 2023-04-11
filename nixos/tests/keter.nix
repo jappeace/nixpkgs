@@ -18,6 +18,7 @@ in
           host = "*4";
           inherit port;
         }];
+        rotate-logs= false;
       };
       bundle = {
         appName = "test-bundle";

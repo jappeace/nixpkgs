@@ -34,10 +34,13 @@ Keep an old app running and swap the ports when the new one is booted.
           host = "*4";
           port = 6981;
         }];
+        rotate-logs= false;
       };
       # You want that ip-from-header in the nginx setup case
       # so it's not set to 127.0.0.1.
       # using a port above 1024 allows you to avoid needing CAP_NET_BIND_SERVICE
+      # rotate-logs = false; emits keter logs and it's applications to stderr
+      # which allows journald to capture them.
       defaultText = lib.literalExpression ''
         {
           ip-from-header = true;
@@ -45,6 +48,7 @@ Keep an old app running and swap the ports when the new one is booted.
             host = "*4";
             port = 6981;
           }];
+          rotate-logs = false;
         }
       '';
       description = lib.mdDoc "Global config for keter";
@@ -122,7 +126,7 @@ Keep an old app running and swap the ports when the new one is booted.
         script = ''
           set -xe
           mkdir -p ${incoming}
-          { tail -F ${cfg.keterRoot}/log/keter/current.log -n 0 & ${cfg.keterPackage}/bin/keter ${globalKeterConfigFile}; }
+          ${cfg.keterPackage}/bin/keter ${globalKeterConfigFile};
         '';
         wantedBy = [ "multi-user.target" "nginx.service" ];
 
