@@ -34,7 +34,7 @@ Keep an old app running and swap the ports when the new one is booted.
           host = "*4";
           port = 6981;
         }];
-        rotate-logs= false;
+        rotate-logs = false;
       };
       # You want that ip-from-header in the nginx setup case
       # so it's not set to 127.0.0.1.
