@@ -38,7 +38,20 @@ let
 
   withChecks = lib.warnIf config.skipLint "Linting is disabled";
 
-  driver =
+  nixosContainerDriver =
+    hostPkgs.runCommand "nixoscontainer-test-driver-${config.name}"
+      {
+        meta = config.meta // {
+          mainProgram = "nixoscontainer-test-driver";
+        };
+      }
+      ''
+        set -xe
+        mkdir -p $out/bin
+        echo "not doing tests"
+      '';
+
+  qemuDriver =
     hostPkgs.runCommand "nixos-test-driver-${config.name}"
       {
         # inherit testName; TODO (roberth): need this?
@@ -116,7 +129,7 @@ in
       '';
     };
 
-    options.method = mkOption {
+    method = mkOption {
       description = mdDoc ''
         virtualization method
 
@@ -186,7 +199,8 @@ in
   config = {
     _module.args.hostPkgs = config.hostPkgs;
 
-    driver = withChecks driver;
+    driver = if config.method == "qemu" then withChecks qemuDriver
+             else withChecks nixosContainerDriver;
 
     # make available on the test runner
     passthru.driver = config.driver;
