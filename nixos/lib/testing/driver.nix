@@ -41,6 +41,8 @@ let
   nixosContainerDriver =
     hostPkgs.runCommand "nixoscontainer-test-driver-${config.name}"
       {
+        preferLocalBuild = true;
+        testScript = config.testScriptString;
         meta = config.meta // {
           mainProgram = "nixoscontainer-test-driver";
         };
@@ -48,7 +50,7 @@ let
       ''
         set -xe
         mkdir -p $out/bin
-        echo "not doing tests"
+        echo "not doing tests :p"
       '';
 
   qemuDriver =
