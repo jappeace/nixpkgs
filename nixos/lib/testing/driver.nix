@@ -4,11 +4,11 @@ let
 
   # Reifies and correctly wraps the python test driver for
   # the respective qemu version and with or without ocr support
-  testDriver = hostPkgs.callPackage ../test-driver {
+  testDriver = if config.method == "qemu" then (hostPkgs.callPackage ../test-driver {
     inherit (config) enableOCR extraPythonPackages;
     qemu_pkg = config.qemu.package;
     imagemagick_light = hostPkgs.imagemagick_light.override { inherit (hostPkgs) libtiff; };
-    tesseract4 = hostPkgs.tesseract4.override { enableLanguages = [ "eng" ]; };
+    tesseract4 = hostPkgs.tesseract4.override { enableLanguages = [ "eng" ]; }) else hostPkgs.callPackage ../test-driver-cointainer { } ;
   };
 
 
@@ -37,21 +37,6 @@ let
   machineNames = map (name: "${name}: Machine;") pythonizedNames;
 
   withChecks = lib.warnIf config.skipLint "Linting is disabled";
-
-  nixosContainerDriver =
-    hostPkgs.runCommand "nixoscontainer-test-driver-${config.name}"
-      {
-        preferLocalBuild = true;
-        testScript = config.testScriptString;
-        meta = config.meta // {
-          mainProgram = "nixoscontainer-test-driver";
-        };
-      }
-      ''
-        set -xe
-        mkdir -p $out/bin
-        echo "not doing tests :p"
-      '';
 
   qemuDriver =
     hostPkgs.runCommand "nixos-test-driver-${config.name}"
@@ -201,7 +186,7 @@ in
   config = {
     _module.args.hostPkgs = config.hostPkgs;
 
-    driver = if config.method == "qemu" then withChecks qemuDriver
+    driver = qemuDriver  withChecks qemuDriver
              else withChecks nixosContainerDriver;
 
     # make available on the test runner
