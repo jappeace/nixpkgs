@@ -14,7 +14,11 @@ let
 
   runContainerTest = module: (evalContainersTests ({ config, ... }: { imports = [ module ]; result = config.test; })).config.result;
 
-  containerModules = [ ];
+  containerModules = [
+    ./name.nix
+    ./nodes.nix
+    ./driver.nix
+  ];
 
   testModules = [
     ./call-test.nix
