@@ -36,6 +36,7 @@ in
   inherit (testing-lib)
     evalTest
     runTest
+    runContainerTest evalContainersTests
     ;
 
 }

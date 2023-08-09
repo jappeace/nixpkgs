@@ -27,6 +27,8 @@ rec {
 
   evalTest = module: nixos-lib.evalTest { imports = [ extraTestModule module ]; };
   runTest = module: nixos-lib.runTest { imports = [ extraTestModule module ]; };
+  evalContainersTests = module: nixos-lib.evalContainersTests { imports = [ extraTestModule module ]; };
+  runContainerTest = module: nixos-lib.runContainerTest { imports = [ extraTestModule module ]; };
 
   extraTestModule = {
     config = {
@@ -48,6 +50,7 @@ rec {
     , skipLint ? false
     , passthru ? {}
     , meta ? {}
+    , method ? "qemu" # either qemu or nixos-container
     , # For meta.position
       pos ? # position used in error messages and for meta.position
         (if meta.description or null != null
@@ -56,8 +59,9 @@ rec {
     , extraPythonPackages ? (_ : [])
     , interactive ? {}
     } @ t: let
+    testFunction = if method == "qemu" then evalTest else evalContainersTests;
     testConfig =
-      (evalTest {
+      (testFunction {
         imports = [
           { _file = "makeTest parameters"; config = t; }
           {

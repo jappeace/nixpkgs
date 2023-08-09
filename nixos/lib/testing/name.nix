@@ -11,4 +11,10 @@ in
     '';
     type = types.str;
   };
+  options.method = mkOption {
+    description = mdDoc ''
+      virtualization method
+    '';
+    type = types.str;
+  };
 }

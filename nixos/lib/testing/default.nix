@@ -7,6 +7,15 @@ let
   };
   runTest = module: (evalTest ({ config, ... }: { imports = [ module ]; result = config.test; })).config.result;
 
+  evalContainersTests = module: lib.evalModules {
+    modules = containerModules ++ [ module ];
+    class = "nixosTest";
+  };
+
+  runContainerTest = module: (evalContainersTests ({ config, ... }: { imports = [ module ]; result = config.test; })).config.result;
+
+  containerModules = [ ];
+
   testModules = [
     ./call-test.nix
     ./driver.nix
@@ -23,5 +32,5 @@ let
 
 in
 {
-  inherit evalTest runTest testModules;
+  inherit evalTest runTest testModules runContainerTest evalContainersTests;
 }
