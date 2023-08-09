@@ -8,7 +8,7 @@ import ./make-test-python.nix ({ pkgs, ... }:
       maintainers = [ jappie ];
     };
 
-
+    method = "nixos-container";
     nodes.machine = { config, pkgs, ... }: {
       services.keter = {
         enable = true;
