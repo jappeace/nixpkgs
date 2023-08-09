@@ -116,6 +116,15 @@ in
       '';
     };
 
+    options.method = mkOption {
+      description = mdDoc ''
+        virtualization method
+
+        either qemu or nixos-container
+      '';
+      type = types.str;
+      default = "qemu";
+    };
     qemu.package = mkOption {
       description = mdDoc "Which qemu package to use for the virtualisation of [{option}`nodes`](#test-opt-nodes).";
       type = types.package;
