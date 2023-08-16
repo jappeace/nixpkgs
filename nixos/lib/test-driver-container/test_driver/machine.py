@@ -188,8 +188,23 @@ def run(
         stderr=subprocess.STDOUT,
         shell=True,
         cwd=state_dir,
-        env=self.build_environment(state_dir, shared_dir),
+        env=build_environment(state_dir, shared_dir),
     )
+
+def build_environment(
+        state_dir: Path,
+        shared_dir: Path,
+) -> dict:
+        # We make a copy to not update the current environment
+        env = dict(os.environ)
+        env.update(
+            {
+                "TMPDIR": str(state_dir),
+                "SHARED_DIR": str(shared_dir),
+                "USE_TMPDIR": "1",
+            }
+        )
+        return env
 
 class Machine:
     """A handle to the machine with this name, that also knows how to manage
@@ -948,7 +963,7 @@ class Machine:
 
         monitor_socket = create_socket(clear(self.monitor_path))
         shell_socket = create_socket(clear(self.shell_path))
-        self.process = self.start_command.run(
+        self.process = run(self.start_command,
             self.state_dir,
             self.shared_dir,
             self.monitor_path,
