@@ -3,6 +3,8 @@ import argparse
 import ptpython.repl
 import os
 import time
+import json
+import sys
 
 from test_driver.logger import rootlog
 
@@ -66,6 +68,7 @@ def main() -> None:
 
     args = arg_parser.parse_args()
 
+    rootlog.info(sys.argv)
     rootlog.info("starting container")
 
 
