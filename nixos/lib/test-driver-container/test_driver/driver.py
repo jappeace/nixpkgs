@@ -6,7 +6,7 @@ import re
 import tempfile
 
 from test_driver.logger import rootlog
-from test_driver.machine import Machine, NixStartScript, retry
+from test_driver.machine import Machine, retry, StartCommand, machine_name
 from test_driver.vlan import VLan
 from test_driver.polling_condition import PollingCondition
 
@@ -65,7 +65,7 @@ class Driver:
             Machine(
                 start_command=StartCommand("echo hi" + cmd),
                 keep_vm_state=keep_vm_state,
-                name=cmd.machine_name,
+                name=machine_name(cmd),
                 tmp_dir=tmp_dir,
                 callbacks=[self.check_polling_conditions],
                 out_dir=self.out_dir,
@@ -163,11 +163,10 @@ class Driver:
 
         if args.get("startCommand"):
             start_command: str = args.get("startCommand", "")
-            cmd = NixStartScript(start_command)
-            name = args.get("name", cmd.machine_name)
+            cmd = StartCommand(start_command)
+            name = args.get("name", machine_name(cmd))
         else:
-            cmd = Machine.create_startcommand(args)  # type: ignore
-            name = args.get("name", "machine")
+            raise Exception("legacy command not supported")
 
         return Machine(
             tmp_dir=tmp_dir,
