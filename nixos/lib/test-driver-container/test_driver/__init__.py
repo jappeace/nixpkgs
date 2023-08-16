@@ -55,7 +55,25 @@ def main() -> None:
         help="the test script to run",
         type=Path,
     )
+    arg_parser.add_argument(
+        "-o",
+        "--output_directory",
+        help="""The path to the directory where outputs copied from the VM will be placed.
+                By e.g. Machine.copy_from_vm or Machine.screenshot""",
+        default=Path.cwd(),
+        type=writeable_dir,
+    )
 
     args = arg_parser.parse_args()
 
     rootlog.info("starting container")
+
+
+def generate_driver_symbols() -> None:
+    """
+    This generates a file with symbols of the test-driver code that can be used
+    in user's test scripts. That list is then used by pyflakes to lint those
+    scripts.
+    """
+    with open("driver-symbols", "w") as fp:
+        fp.write("")
