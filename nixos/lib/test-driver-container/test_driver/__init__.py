@@ -5,7 +5,6 @@ import os
 import time
 
 from test_driver.logger import rootlog
-from test_driver.driver import Driver
 
 
 class EnvDefault(argparse.Action):
@@ -50,42 +49,6 @@ def writeable_dir(arg: str) -> Path:
 def main() -> None:
     arg_parser = argparse.ArgumentParser(prog="nixos-test-driver")
     arg_parser.add_argument(
-        "-K",
-        "--keep-vm-state",
-        help="re-use a VM state coming from a previous run",
-        action="store_true",
-    )
-    arg_parser.add_argument(
-        "-I",
-        "--interactive",
-        help="drop into a python repl and run the tests interactively",
-        action=argparse.BooleanOptionalAction,
-    )
-    arg_parser.add_argument(
-        "--start-scripts",
-        metavar="START-SCRIPT",
-        action=EnvDefault,
-        envvar="startScripts",
-        nargs="*",
-        help="start scripts for participating virtual machines",
-    )
-    arg_parser.add_argument(
-        "--vlans",
-        metavar="VLAN",
-        action=EnvDefault,
-        envvar="vlans",
-        nargs="*",
-        help="vlans to span by the driver",
-    )
-    arg_parser.add_argument(
-        "-o",
-        "--output_directory",
-        help="""The path to the directory where outputs copied from the VM will be placed.
-                By e.g. Machine.copy_from_vm or Machine.screenshot""",
-        default=Path.cwd(),
-        type=writeable_dir,
-    )
-    arg_parser.add_argument(
         "testscript",
         action=EnvDefault,
         envvar="testScript",
@@ -95,32 +58,4 @@ def main() -> None:
 
     args = arg_parser.parse_args()
 
-    if not args.keep_vm_state:
-        rootlog.info("Machine state will be reset. To keep it, pass --keep-vm-state")
-
-    with Driver(
-        args.start_scripts,
-        args.vlans,
-        args.testscript.read_text(),
-        args.output_directory.resolve(),
-        args.keep_vm_state,
-    ) as driver:
-        if args.interactive:
-            ptpython.repl.embed(driver.test_symbols(), {})
-        else:
-            tic = time.time()
-            driver.run_tests()
-            toc = time.time()
-            rootlog.info(f"test script finished in {(toc-tic):.2f}s")
-
-
-def generate_driver_symbols() -> None:
-    """
-    This generates a file with symbols of the test-driver code that can be used
-    in user's test scripts. That list is then used by pyflakes to lint those
-    scripts.
-    """
-    d = Driver([], [], "", Path())
-    test_symbols = d.test_symbols()
-    with open("driver-symbols", "w") as fp:
-        fp.write(",".join(test_symbols.keys()))
+    rootlog.info("starting container")
