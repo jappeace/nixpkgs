@@ -132,14 +132,17 @@ def retry(fn: Callable, timeout: int = 900) -> None:
     if not fn(True):
         raise Exception(f"action timed out after {timeout} seconds")
 
-def machine_name(cmd : str) -> str:
+
+def machine_name(cmd: str) -> str:
     match = re.search("run-(.+)-vm$", cmd)
     name = "machine"
     if match:
         name = match.group(1)
     return name
 
-StartCommand = NewType('StartCommand', str)
+
+StartCommand = NewType("StartCommand", str)
+
 
 def cmd(
     command: StartCommand,
@@ -173,6 +176,7 @@ def cmd(
         f"{display_opts}"
     )
 
+
 def run(
     command: StartCommand,
     state_dir: Path,
@@ -191,20 +195,22 @@ def run(
         env=build_environment(state_dir, shared_dir),
     )
 
+
 def build_environment(
-        state_dir: Path,
-        shared_dir: Path,
+    state_dir: Path,
+    shared_dir: Path,
 ) -> dict:
-        # We make a copy to not update the current environment
-        env = dict(os.environ)
-        env.update(
-            {
-                "TMPDIR": str(state_dir),
-                "SHARED_DIR": str(shared_dir),
-                "USE_TMPDIR": "1",
-            }
-        )
-        return env
+    # We make a copy to not update the current environment
+    env = dict(os.environ)
+    env.update(
+        {
+            "TMPDIR": str(state_dir),
+            "SHARED_DIR": str(shared_dir),
+            "USE_TMPDIR": "1",
+        }
+    )
+    return env
+
 
 class Machine:
     """A handle to the machine with this name, that also knows how to manage
@@ -963,7 +969,8 @@ class Machine:
 
         monitor_socket = create_socket(clear(self.monitor_path))
         shell_socket = create_socket(clear(self.shell_path))
-        self.process = run(self.start_command,
+        self.process = run(
+            self.start_command,
             self.state_dir,
             self.shared_dir,
             self.monitor_path,
