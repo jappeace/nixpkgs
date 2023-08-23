@@ -65,10 +65,23 @@ def main() -> None:
         default=Path.cwd(),
         type=writeable_dir,
     )
+    arg_parser.add_argument(
+        "--start-scripts",
+        metavar="START-SCRIPT",
+        action=EnvDefault,
+        envvar="startScripts",
+        nargs="*",
+        help="start scripts for participating virtual machines",
+    )
 
     args = arg_parser.parse_args()
 
-    rootlog.info(sys.argv)
+    rootlog.info(','.join(sys.argv))
+
+    for name, value in os.environ.items():
+        rootlog.info("{0}: {1}".format(name, value))
+
+    rootlog.info("start script " + ','.join(args.start_scripts))
     rootlog.info("starting container")
 
 

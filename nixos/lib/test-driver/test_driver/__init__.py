@@ -50,6 +50,14 @@ def writeable_dir(arg: str) -> Path:
 def main() -> None:
     arg_parser = argparse.ArgumentParser(prog="nixos-test-driver")
     arg_parser.add_argument(
+        "--start-scripts",
+        metavar="START-SCRIPT",
+        action=EnvDefault,
+        envvar="startScripts",
+        nargs="*",
+        help="start scripts for participating virtual machines",
+    )
+    arg_parser.add_argument(
         "-K",
         "--keep-vm-state",
         help="re-use a VM state coming from a previous run",
@@ -60,14 +68,6 @@ def main() -> None:
         "--interactive",
         help="drop into a python repl and run the tests interactively",
         action=argparse.BooleanOptionalAction,
-    )
-    arg_parser.add_argument(
-        "--start-scripts",
-        metavar="START-SCRIPT",
-        action=EnvDefault,
-        envvar="startScripts",
-        nargs="*",
-        help="start scripts for participating virtual machines",
     )
     arg_parser.add_argument(
         "--vlans",

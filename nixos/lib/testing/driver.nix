@@ -20,6 +20,10 @@ let
   vlans = map (m: (
     m.virtualisation.vlans ++
     (lib.mapAttrsToList (_: v: v.vlan) m.virtualisation.interfaces))) (lib.attrValues config.nodes);
+
+  buildCommand = m: if config.method == "qemu" then m.system.build.vm else import ../../modules/virtualisation/nixos-containers.nix m;
+
+  # this is used in startScripts to tell teh driver how to start a vm
   vms = map (m: m.system.build.vm) (lib.attrValues config.nodes);
 
   nodeHostNames =
