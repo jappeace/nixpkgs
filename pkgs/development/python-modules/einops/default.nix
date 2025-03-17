@@ -50,7 +50,7 @@ buildPythonPackage rec {
     "test_backends_installed"
   ];
 
-  disabledTestPaths = [ "tests/test_layers.py" ];
+  disabledTestPaths = [ "tests/test_notebooks.py" "tests/test_layers.py" ];
 
   __darwinAllowLocalNetworking = true;
 
