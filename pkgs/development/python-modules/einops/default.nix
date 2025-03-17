@@ -3,7 +3,6 @@
   buildPythonPackage,
   fetchFromGitHub,
   hatchling,
-  nbconvert,
   numpy,
   parameterized,
   pillow,
@@ -28,7 +27,6 @@ buildPythonPackage rec {
   nativeBuildInputs = [ hatchling ];
 
   nativeCheckInputs = [
-    nbconvert
     numpy
     parameterized
     pillow
