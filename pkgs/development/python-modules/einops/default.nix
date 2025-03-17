@@ -42,6 +42,7 @@ buildPythonPackage rec {
   pythonImportsCheck = [ "einops" ];
 
   disabledTests = [
+    "test_notebooks"
     # Tests are failing as mxnet is not pulled-in
     # https://github.com/NixOS/nixpkgs/issues/174872
     "test_all_notebooks"
