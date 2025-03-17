@@ -3,7 +3,6 @@
   buildPythonPackage,
   fetchFromGitHub,
   hatchling,
-  jupyter,
   nbconvert,
   numpy,
   parameterized,
@@ -29,7 +28,6 @@ buildPythonPackage rec {
   nativeBuildInputs = [ hatchling ];
 
   nativeCheckInputs = [
-    jupyter
     nbconvert
     numpy
     parameterized
