@@ -73,7 +73,7 @@ let
       owner = "pandas-dev";
       repo = "pandas";
       rev = "refs/tags/v${version}";
-      hash = "sha256-0YUROcqOV2P1AbJF9IMBIqTt7/PSTeXDwGgE4uI9GME=";
+      hash = "sha256-xP2hCVqxOZOTVreRf55PJ1kpjVUO0u9FOXOXNU9zRGo=";
     };
 
     postPatch = ''
