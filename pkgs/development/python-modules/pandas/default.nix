@@ -24,6 +24,7 @@
 # Darwin inputs
 , runtimeShell
 , libcxx
+, ...
 }:
 
 buildPythonPackage rec {
